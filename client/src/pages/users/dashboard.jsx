@@ -24,11 +24,11 @@ function UserDashboard({ allCoins }) {
 
     // Update filteredCoins state whenever allCoins or filterOptions change
     useEffect(() => {
-        const newFilteredCoins = allCoins.filter((event) => {
+        const newFilteredCoins = allCoins.filter((coins) => {
             // Check if keyword filter matches
             if (
                 filterOptions.keyword.toLowerCase() &&
-                !event.name
+                !coins.name
                     .toLowerCase()
                     .includes(filterOptions.keyword.toLowerCase())
             ) {
@@ -37,8 +37,8 @@ function UserDashboard({ allCoins }) {
 
             // Check if price filter matches
             if (
-                event.current_price < filterOptions.price[0] ||
-                event.current_price > filterOptions.price[1]
+                coins.current_price < filterOptions.price[0] ||
+                coins.current_price > filterOptions.price[1]
             ) {
                 return false;
             }
@@ -99,21 +99,21 @@ function UserDashboard({ allCoins }) {
                                         <p>Limit exceeded</p>
                                     ) : (
                                         Array.isArray(filteredCoins) &&
-                                        filteredCoins.map((event) => (
+                                        filteredCoins.map((coins) => (
                                             <div
                                                 onClick={() => {
                                                     router.push(
-                                                        `/event/${event.event_id}`
+                                                        `/coins/${coins.id}`
                                                     );
                                                 }}
                                                 className="hover:scale-105 cursor-pointer transition-all mt-5 bg-[color:var(--white-color)] rounded-lg shadow-md px-3 py-3"
-                                                key={event.id}
+                                                key={coins.id}
                                             >
                                                 <div className="relative h-20 w-20">
-                                                    {event.image && (
+                                                    {coins.image && (
                                                         <Image
                                                             className="object-contain h-full w-full rounded-md"
-                                                            src={event.image}
+                                                            src={coins.image}
                                                             alt=""
                                                             width={100}
                                                             height={100}
@@ -124,25 +124,25 @@ function UserDashboard({ allCoins }) {
                                                 <div className="flex flex-row justify-between items-start mt-4">
                                                     <div className="px-2">
                                                         <p className="text-sm text-gray-800 font-bold">
-                                                            {event.name.length >
+                                                            {coins.name.length >
                                                             30
-                                                                ? event.name.slice(
+                                                                ? coins.name.slice(
                                                                       0,
                                                                       30
                                                                   ) + "..."
-                                                                : event.name}
+                                                                : coins.name}
                                                         </p>
                                                         <p className="text-sm text-gray-800 pt-1.5">
                                                             ₹
-                                                            {event.market_cap.toString()
+                                                            {coins.market_cap.toString()
                                                                 .length > 12
-                                                                ? event.market_cap
+                                                                ? coins.market_cap
                                                                       .toString()
                                                                       .slice(
                                                                           0,
                                                                           12
                                                                       ) + "..."
-                                                                : event.market_cap}
+                                                                : coins.market_cap}
                                                         </p>
                                                     </div>
                                                     {/* Star component */}
@@ -151,14 +151,14 @@ function UserDashboard({ allCoins }) {
                                                             <strong className="whitespace-nowrap">
                                                                 ₹{" "}
                                                                 {
-                                                                    event.current_price
+                                                                    coins.current_price
                                                                 }
                                                             </strong>
                                                         </p>
                                                         <span className="w-full flex flex-row items-center">
                                                             <TfiExchangeVertical />
                                                             <span className="ml-2 text-sm">
-                                                                {event.price_change_percentage_24h.toFixed(
+                                                                {coins.price_change_percentage_24h.toFixed(
                                                                     2
                                                                 )}
                                                                 %

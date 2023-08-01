@@ -61,3 +61,7 @@
 .btn-sm {
     @apply px-4 py-2;
 }
+
+.coin-description a {
+  text-decoration: underline;
+}
