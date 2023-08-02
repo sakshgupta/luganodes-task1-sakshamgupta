@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
     };
 }
 
-export default function signin({ userIdCookie }) {
+export default function Signin({ userIdCookie }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [step, setStep] = useState(1);
@@ -206,7 +206,7 @@ export default function signin({ userIdCookie }) {
                                 </div>
 
                                 <p className="text-sm text-gray-700 mt-6">
-                                    *Don't have an account?{" "}
+                                    *Don&apos;t have an account?{" "}
                                     <a
                                         href="http://localhost:3000/users/signup"
                                         className="text-[color:var(--darker-secondary-color)]"
@@ -234,7 +234,7 @@ export default function signin({ userIdCookie }) {
                                                 <span className="font-bold">
                                                     Hey there!{" "}
                                                 </span>
-                                                Welcome back, you're
+                                                Welcome back, you&apos;re
                                                 successfully signed in!
                                             </p>
                                         </div>

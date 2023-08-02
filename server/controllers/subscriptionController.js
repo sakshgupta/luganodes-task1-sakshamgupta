@@ -37,7 +37,9 @@ const dailyUpdate = async (req, res) => {
       }
 
       //sending email
-      dailyNotificationEmail(userName, userEmail, currencyDetails);
+      if(currencyDetails.length != 0){
+        dailyNotificationEmail(userName, userEmail, currencyDetails);
+      }
 
       return true;
     });
