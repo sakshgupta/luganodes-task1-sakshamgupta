@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>CryptoYard Web Application with Price Alerts and Email Notifications</title>
 </head>
 <body>
     <h1>CryptoYard Web Application with Price Alerts and Email Notifications</h1>
