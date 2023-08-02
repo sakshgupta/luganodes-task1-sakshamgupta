@@ -59,6 +59,54 @@ function CoinPage() {
         setIsPriceAlerting(true); // Set some state to track if the popup is open
     };
 
+    const handleUnsubscribe = async () => {
+        const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/notify/remove/subscribe`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            userId: userId,
+                            currencyId: coinId,
+                        }),
+                    }
+                );
+                const data = await response.json();
+                if (response.status === 200) {
+                    console.log("Subscription success:", data);
+                    alert(data.message);
+                    setIsSubscribing(false);
+                } else {
+                    console.error(`Failed with status code ${response.status}`);
+                }
+  };
+
+    const handleRemovePriceAlerts = async () => {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/currency/deletelimit`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    currencyId: coinId,
+                }),
+            }
+        );
+        const data = await response.json();
+        if (response.status === 200) {
+            console.log("Subscription success:", data);
+            alert(data.message);
+            setIsSubscribing(false);
+        } else {
+            console.error(`Failed with status code ${response.status}`);
+        }
+    };
+
     if (!coinData || !coinData?.image?.large)
         // If coin data isn't loaded correctly, it should recall API
         return <div onLoad={fetchCoin()}>loading...</div>;
@@ -199,10 +247,26 @@ function CoinPage() {
                                             Set Price Alerts
                                         </button>
                                     </div>
-                                    {/* <p className="text-sm text-[color:var(--darker-secondary-color)] mt-6">
-                                        *Caution: All ticket sales are final and
-                                        non-refundable.
-                                    </p> */}
+
+                                    <p className="text-gray-600 mb-4">
+                                        If you have any older subscription you can remove it from here:
+                                    </p>
+                                    <div className="flex flex-col space-y-2 mb-6">
+                                        <button
+                                            onClick={() => handleUnsubscribe()}
+                                            className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md focus:outline-none"
+                                        >
+                                            Unsubscribe from Daily Updates
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                handleRemovePriceAlerts()
+                                            }
+                                            className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md focus:outline-none"
+                                        >
+                                            Remove Price Alerts
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

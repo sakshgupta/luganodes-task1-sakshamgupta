@@ -26,36 +26,29 @@ const PriceAlertPopup = ({ coinData, onClose }) => {
         e.preventDefault();
         try {
             if (lowerBound && upperBound && isChecked) {
-                // const response = await fetch(
-                //     `${process.env.NEXT_PUBLIC_API_URL}/notify/subscribe/currency`,
-                //     {
-                //         method: "POST",
-                //         headers: {
-                //             "Content-Type": "application/json",
-                //         },
-                //         body: JSON.stringify({
-                //             userId: userId,
-                //             currencyId: coinData.id,
-                //             lower_bound: parseFloat(lowerBound),
-                //             upper_bound: parseFloat(upperBound),
-                //         }),
-                //     }
-                // );
-                // const data = await response.json();
-                // if (response.status === 200) {
-                //     console.log('Subscription success:', data);
-                // } else {
-                //     console.error(`Failed with status code ${response.status}`);
-                // }
-                console.log(
-                    "Price alert subscription success:",
-                    coinData.id,
-                    " ",
-                    parseFloat(lowerBound),
-                    " ",
-                    parseFloat(upperBound)
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/notify/setlimit`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            userId: userId,
+                            currencyId: coinData.id,
+                            lower_bound: parseFloat(lowerBound),
+                            upper_bound: parseFloat(upperBound),
+                        }),
+                    }
                 );
-                onClose();
+                const data = await response.json();
+                if (response.status === 200) {
+                    console.log('Subscription success:', data);
+                    alert(data.message);
+                    onClose();
+                } else {
+                    console.error(`Failed with status code ${response.status}`);
+                }
             }
         } catch (error) {
             console.error("Price alert subscription error:", error);
@@ -91,23 +84,23 @@ const PriceAlertPopup = ({ coinData, onClose }) => {
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="flex items-center space-x-2">
-                        <label htmlFor="lowerBound">Lower Bound:</label>
-                        <input
-                            type="number"
-                            id="lowerBound"
-                            value={lowerBound}
-                            onChange={handleLowerBoundChange}
-                            className="border border-[color:var(--darker-secondary-color)] px-2 py-1 rounded-md focus:outline-none focus:border-[color:var(--darker-secondary-color)]"
-                            required
-                        />
-                    </div>
-                    <div className="flex items-center space-x-2">
                         <label htmlFor="upperBound">Upper Bound:</label>
                         <input
                             type="number"
                             id="upperBound"
                             value={upperBound}
                             onChange={handleUpperBoundChange}
+                            className="border border-[color:var(--darker-secondary-color)] px-2 py-1 rounded-md focus:outline-none focus:border-[color:var(--darker-secondary-color)]"
+                            required
+                        />
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <label htmlFor="lowerBound">Lower Bound:</label>
+                        <input
+                            type="number"
+                            id="lowerBound"
+                            value={lowerBound}
+                            onChange={handleLowerBoundChange}
                             className="border border-[color:var(--darker-secondary-color)] px-2 py-1 rounded-md focus:outline-none focus:border-[color:var(--darker-secondary-color)]"
                             required
                         />

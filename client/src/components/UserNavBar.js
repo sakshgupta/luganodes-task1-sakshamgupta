@@ -6,49 +6,45 @@ import { useEffect, useState } from "react";
 
 export default function NavBar() {
     const router = useRouter();
-    const [userData, setUserData] = useState({
-        username: "Guest",
-        email: "guest@gmail.com",
-        createdAt: "2023-03-13T17:47:29.573+00:00",
-    });
+    const [userData, setUserData] = useState({});
 
-    // const userIdCookie = getUserToken();
+    const userIdCookie = getUserToken();
 
-    // // fetch the user data as soon as the page loads
-    // const fetchUserData = async () => {
-    //     // If cookie was manually removed from browser
-    //     if (!userIdCookie) {
-    //         console.error("No cookie found! Please signin");
-    //         // redirect to signin
-    //         router.push("/users/signin");
-    //     }
-    //     const response = await fetch(
-    //         `${process.env.NEXT_PUBLIC_API_URL}/user/details`,
-    //         {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({
-    //                 user_token: userIdCookie,
-    //             }),
-    //         }
-    //     );
-    //     if (!response.ok)
-    //         throw new Error(`${response.status} ${response.statusText}`);
+    // fetch the user data as soon as the page loads
+    const fetchUserData = async () => {
+        // If cookie was manually removed from browser
+        if (!userIdCookie) {
+            console.error("No cookie found! Please signin");
+            // redirect to signin
+            router.push("/users/signin");
+        }
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/user/details`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: userIdCookie,
+                }),
+            }
+        );
+        if (!response.ok)
+            throw new Error(`${response.status} ${response.statusText}`);
 
-    //     // User Details fetched from API `/user/details`
-    //     try {
-    //         const data = await response.json();
-    //         setUserData(data);
-    //     } catch (error) {
-    //         console.error("Invalid JSON string:", error.message);
-    //     }
-    // };
+        // User Details fetched from API `/user/details`
+        try {
+            const data = await response.json();
+            setUserData(data[0]);
+        } catch (error) {
+            console.error("Invalid JSON string:", error.message);
+        }
+    };
 
-    // useEffect(() => {
-    //     fetchUserData();
-    // }, []);
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     return (
         <div className="mb-[8vh]">
@@ -58,15 +54,8 @@ export default function NavBar() {
                         onClick={() => router.push("/")}
                         className="flex items-center gap-x-3 cursor-pointer"
                     >
-                        <Image
-                            src="/favicon_io/android-chrome-192x192.png"
-                            width={500}
-                            height={500}
-                            alt="Logo"
-                            className="h-8 w-8"
-                        />
                         <h1 className="m-2 text-black font-bold text-4xl">
-                            CryptoTracker
+                            CryptoYard
                         </h1>
                     </div>
                     <nav className="text-sm">
@@ -76,14 +65,6 @@ export default function NavBar() {
                                 className="mr-4 cursor-pointer"
                             >
                                 <a>Dashboard</a>
-                            </li>
-                            <li
-                                onClick={() =>
-                                    router.push("/users/past_events")
-                                }
-                                className="mr-4 cursor-pointer"
-                            >
-                                <a>Past Events</a>
                             </li>
                             <UserDropdown userData={userData} />
                         </ul>

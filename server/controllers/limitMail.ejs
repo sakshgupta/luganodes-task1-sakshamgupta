@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Daily Notification Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .logo {
+            max-width: 200px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .greeting {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .message {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .details {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .details th,
+        .details td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .details th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .note {
+            font-size: 14px;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .signature {
+            font-size: 16px;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        .signature span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img class="logo" src="https://i.ibb.co/CB1tLGC/logo.png" alt="Logo" border="0" />
+    </div>
+    <div class="content">
+        <p class="greeting">Hey, <span>
+                <%= userName %>
+            </span>!</p>
+        <p class="message">We are thrilled to have you as our subscriber!</p>
+        <p>Your price alerts for your favorite currency are all set:</p>
+        <table class="details">
+            <tr>
+                <th>Current Price</th>
+                <td><span>
+                        <%= current_price %>
+                    </span></td>
+            </tr>
+            <tr>
+                <th>Lower Bound</th>
+                <td><span>
+                        <%= lower_bound %>
+                    </span></td>
+            </tr>
+            <tr>
+                <th>Upper Bound</th>
+                <td><span>
+                        <%= upper_bound %>
+                    </span></td>
+            </tr>
+        </table>
+
+        <p class="note">We'll notify you if the price goes above the upper bound or below the lower bound.</p>
+        <p>Thank you for choosing our service!</p>
+        <p class="signature">Best Regards,<br> Saksham Gupta </p>
+    </div>
+</body>
+
+</html>

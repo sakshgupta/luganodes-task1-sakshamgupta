@@ -5,17 +5,39 @@ import UserDashboard from "./users/dashboard";
 const inter = Inter({ subsets: ["latin"] });
 
 export const getServerSideProps = async () => {
-    console.log("hey");
-    const res = await fetch(`${process.env.NEXT_PUBLIC_COINS_API_URL}`);
-    const allCoins = await res.json();
-    return { props: { allCoins } };
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_COINS_API_URL}`);
+        if (res.status === 429) {
+            const errorMessage = await res.json();
+            return {
+                props: {
+                    allCoins: [],
+                    errorMessage: "You've exceeded the Rate Limit.",
+                },
+            };
+        }
+        const allCoins = await res.json();
+        return { props: { allCoins } };
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return {
+            props: {
+                allCoins: [],
+                errorMessage: "Error fetching data. Please try again later.",
+            },
+        };
+    }
 };
 
-export default function Home({ allCoins }) {
+
+export default function Home({ allCoins, errorMessage }) {
     return (
         <div>
-            CryptoTracker
-            <UserDashboard allCoins={allCoins} />
+            {errorMessage ? (
+                <p className="text-red-500">{errorMessage}</p>
+            ) : (
+                <UserDashboard allCoins={allCoins} />
+            )}
         </div>
     );
 }

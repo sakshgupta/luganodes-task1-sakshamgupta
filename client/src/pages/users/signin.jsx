@@ -19,7 +19,7 @@ export async function getServerSideProps(context) {
 
 export default function signin({ userIdCookie }) {
     const [email, setEmail] = useState("");
-    const [otp, setOtp] = useState("");
+    const [password, setPassword] = useState("");
     const [step, setStep] = useState(1);
     const [message, setMessage] = useState({ errorMsg: "", successMsg: "" });
     const router = useRouter();
@@ -39,12 +39,12 @@ export default function signin({ userIdCookie }) {
 
             // Redirect to dashboard
             setTimeout(() => {
-                router.push("/users/dashboard");
+                router.push("/");
             }, 800);
         }
     }, []);
 
-    const handleVerifyEmail = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/user/signin`,
@@ -55,45 +55,7 @@ export default function signin({ userIdCookie }) {
                 },
                 body: JSON.stringify({
                     email: email,
-                }),
-            }
-        );
-        const data = await response.json();
-        if (response.status === 200) {
-            setMessage({ errorMsg: "", successMsg: data.msg });
-            console.log(data);
-            setStep(2); // Move to next step on the same page
-        } else {
-            console.error(`Failed with status code ${response.status}`);
-            setMessage({ errorMsg: data.msg, successMsg: "" });
-            // redirect to signup if shown "This Email ID is not registered. Try Signing Up instead!"
-            setTimeout(() => {
-                // Set success message
-                setMessage({
-                    errorMsg: "Redirecting you to SignUp ...",
-                    successMsg: "",
-                });
-            }, 1700);
-
-            // Redirect to dashboard
-            setTimeout(() => {
-                router.push("/users/signup");
-            }, 2500);
-        }
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/user/signin/verify`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: email,
-                    otp: otp,
+                    password: password,
                 }),
             }
         );
@@ -103,7 +65,7 @@ export default function signin({ userIdCookie }) {
             console.log(data);
             setStep(3); // Move to next step on the same page
 
-            setUserToken(data.user_id); // set cookie when signed up
+            setUserToken(data.user.user_id); // set cookie when signed up
         } else {
             console.error(`Failed with status code ${response.status}`);
             setMessage({ errorMsg: data.msg, successMsg: "" });
@@ -125,24 +87,6 @@ export default function signin({ userIdCookie }) {
             <div className="max-w-3xl mx-auto mt-10">
                 {/* Steps Nav */}
                 <div className="flex items-center justify-center">
-                    {/* Step 1: normal-height:fit; mobile-view: 6rem*/}
-                    <div
-                        className={`w-full h-24 lg:h-fit ${
-                            step === 1 ? `font-medium` : ``
-                        }`}
-                    >
-                        <div
-                            className={`h-full border-2 rounded-l-lg px-5 py-2 ${
-                                step >= 1
-                                    ? `text-white bg-[color:var(--darker-secondary-color)] border-r-white border-[color:var(--darker-secondary-color)]`
-                                    : `border-[color:var(--darker-secondary-color)] border-dashed`
-                            }`}
-                        >
-                            <div>01</div>
-                            Verify Email
-                        </div>
-                    </div>
-
                     {/* Step 2: normal-height:fit; mobile-view: 6rem */}
                     <div
                         className={`w-full h-24 lg:h-fit ${
@@ -150,14 +94,14 @@ export default function signin({ userIdCookie }) {
                         }`}
                     >
                         <div
-                            className={`h-full border-2 border-l-0 px-5 py-2 ${
+                            className={`h-full border-2 rounded-l-lg px-5 py-2 ${
                                 step >= 2
                                     ? `text-white bg-[color:var(--darker-secondary-color)] border-r-white border-[color:var(--darker-secondary-color)]`
                                     : `border-[color:var(--darker-secondary-color)] border-dashed`
                             }`}
                         >
-                            <div>02</div>
-                            OTP Verification
+                            <div>01</div>
+                            Signin
                         </div>
                     </div>
 
@@ -174,7 +118,7 @@ export default function signin({ userIdCookie }) {
                                     : `border-[color:var(--darker-secondary-color)] border-dashed`
                             }`}
                         >
-                            <div>03</div>
+                            <div>02</div>
                             Go to Dashboard!
                         </div>
                     </div>
@@ -199,7 +143,7 @@ export default function signin({ userIdCookie }) {
                     {
                         /* Step 1 Content*/
                         step === 1 && (
-                            <form onSubmit={handleVerifyEmail}>
+                            <form onSubmit={setStep(2)}>
                                 <label className="block mb-2 text-sm font-medium text-gray-700">
                                     Enter your Registered Email address
                                 </label>
@@ -225,24 +169,51 @@ export default function signin({ userIdCookie }) {
                         /* Step 2 Content */
                         step === 2 && (
                             <form onSubmit={handleSubmit}>
-                                {/* Only OTP in Signin */}
+                                {/* Email in Signin */}
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-700">
-                                        Enter Verification Code
+                                        Enter your Registered Email address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={email}
+                                        className="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-10/12"
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
+                                    />
+                                </div>
+                                {/* Password in Signin */}
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-700">
+                                        Enter your password
                                     </label>
 
                                     <input
-                                        type="text"
-                                        id="otp"
-                                        name="otp"
+                                        type="password"
+                                        id="password"
+                                        name="password"
                                         autoComplete="none"
                                         required
-                                        value={otp}
+                                        value={password}
                                         className="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-10/12"
-                                        onChange={(e) => setOtp(e.target.value)}
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
                                     />
                                 </div>
 
+                                <p className="text-sm text-gray-700 mt-6">
+                                    *Don't have an account?{" "}
+                                    <a
+                                        href="http://localhost:3000/users/signup"
+                                        className="text-[color:var(--darker-secondary-color)]"
+                                    >
+                                        Signup.
+                                    </a>
+                                </p>
                                 <button
                                     type="submit"
                                     className="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
@@ -270,9 +241,7 @@ export default function signin({ userIdCookie }) {
                                     </div>
                                 </div>
                                 <button
-                                    onClick={() =>
-                                        router.push("/users/dashboard")
-                                    }
+                                    onClick={() => router.push("/")}
                                     className="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)] transition ease-in-out"
                                 >
                                     Go to your dashboard

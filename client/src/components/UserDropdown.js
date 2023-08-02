@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FaAngleDown } from "react-icons/fa";
-import { useRouter } from "next/router";
 import { removeUserToken } from "@/utils/removeUserToken";
+import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
+import { FaAngleDown } from "react-icons/fa";
 
 export default function Dropdown({ userData }) {
     const router = useRouter();
@@ -16,7 +16,7 @@ export default function Dropdown({ userData }) {
     // function to handle logout button click
     const handleLogout = () => {
         removeUserToken();
-        router.push("/");
+        router.push("/users/signin");
     };
 
     // Attaches an event listener for the 'mousedown' event to detect a click outside the dropdown
@@ -34,6 +34,8 @@ export default function Dropdown({ userData }) {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [dropdownRef]);
+
+    console.log(userData);
 
     return (
         <li className="mr-4 cursor-pointer relative" ref={dropdownRef}>
@@ -55,9 +57,7 @@ export default function Dropdown({ userData }) {
                             <div className="text-gray-800 font-medium">
                                 Full Name
                             </div>
-                            <div className="text-gray-600">
-                                {userData.username}
-                            </div>
+                            <div className="text-gray-600">{userData.name}</div>
                         </div>
                         <hr />
                         <div className="px-4 pb-2 cursor-default hover:bg-[color:var(--primary-color)]">

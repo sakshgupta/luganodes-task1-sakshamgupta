@@ -59,10 +59,11 @@ function Popup_Filter({
                         name="keyword"
                         value={filterOptions.keyword}
                         onChange={handleInputChange}
-                        className="filterInput"
+                        className="filterInput w-full border border-gray-300 px-3 py-2 rounded-md"
                         placeholder="Search by keyword..."
                     />
                 </div>
+
                 <div>
                     <h3>Price</h3>
                     <Slider
