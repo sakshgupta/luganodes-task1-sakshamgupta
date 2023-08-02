@@ -55,7 +55,7 @@ export default function NavBar() {
             <header className="bg-[color:var(--white-color)] fixed top-0 z-50 w-full shadow-md text-[color:var(--darker-secondary-color)]">
                 <div className="container mx-auto flex items-center flex-col lg:flex-row justify-between p-4">
                     <div
-                        onClick={() => router.push("/users/dashboard")}
+                        onClick={() => router.push("/")}
                         className="flex items-center gap-x-3 cursor-pointer"
                     >
                         <Image
@@ -72,7 +72,7 @@ export default function NavBar() {
                     <nav className="text-sm">
                         <ul className="flex items-center">
                             <li
-                                onClick={() => router.push("/users/dashboard")}
+                                onClick={() => router.push("/")}
                                 className="mr-4 cursor-pointer"
                             >
                                 <a>Dashboard</a>
@@ -84,12 +84,6 @@ export default function NavBar() {
                                 className="mr-4 cursor-pointer"
                             >
                                 <a>Past Events</a>
-                            </li>
-                            <li
-                                onClick={() => router.push("/")}
-                                className="mr-4 cursor-pointer"
-                            >
-                                <a>About us</a>
                             </li>
                             <UserDropdown userData={userData} />
                         </ul>
