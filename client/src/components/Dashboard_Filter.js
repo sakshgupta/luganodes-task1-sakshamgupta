@@ -49,7 +49,7 @@ function Dashboard_Filter({
                         name="keyword"
                         value={filterOptions.keyword}
                         onChange={handleInputChange}
-                        className="filterInput"
+                        className="filterInput filterInput w-full border border-gray-300 px-3 py-2 rounded-md"
                         placeholder="Search by keyword..."
                     />
                 </div>

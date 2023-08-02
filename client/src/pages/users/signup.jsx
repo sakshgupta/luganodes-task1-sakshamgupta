@@ -51,7 +51,7 @@ export default function Signup({ userIdCookie }) {
     // Take all info, return account creating
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if(passwordMatch){
+        if (passwordMatch) {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
                 {
@@ -70,15 +70,15 @@ export default function Signup({ userIdCookie }) {
             if (response.status === 201) {
                 setMessage({ errorMsg: "", successMsg: data.msg });
                 console.log(data);
-                setStep(3); // Move to next step on the same page
-    
+
                 setUserToken(data.user.user_id); // set cookie when signed up
+
+                router.push("/");
             } else {
                 console.error(`Failed with status code ${response.status}`);
                 setMessage({ errorMsg: data.msg, successMsg: "" });
             }
-        }
-        else{
+        } else {
             alert("Passwords do not match. Please re-enter the passwords.");
         }
     };
@@ -115,7 +115,7 @@ export default function Signup({ userIdCookie }) {
                         }`}
                     >
                         <div
-                            className={`h-full border-2 rounded-l-lg px-5 py-2 ${
+                            className={`h-full border-2 rounded-l-lg rounded-r-lg px-5 py-2 ${
                                 step >= 2
                                     ? `text-white bg-[color:var(--darker-secondary-color)] border-r-white border-[color:var(--darker-secondary-color)]`
                                     : `border-[color:var(--darker-secondary-color)] border-dashed`
@@ -123,24 +123,6 @@ export default function Signup({ userIdCookie }) {
                         >
                             <div>01</div>
                             Signup
-                        </div>
-                    </div>
-
-                    {/* Step 3: normal-height:fit; mobile-view: 6rem */}
-                    <div
-                        className={`w-full h-24 lg:h-fit ${
-                            step === 3 ? `font-medium` : ``
-                        }`}
-                    >
-                        <div
-                            className={`h-full border-2 border-l-0 rounded-r-lg px-5 py-2 ${
-                                step >= 3
-                                    ? `text-white bg-[color:var(--darker-secondary-color)] border-[color:var(--darker-secondary-color)]`
-                                    : `border-[color:var(--darker-secondary-color)] border-dashed`
-                            }`}
-                        >
-                            <div>02</div>
-                            Go to Dashboard!
                         </div>
                     </div>
                 </div>
@@ -272,7 +254,7 @@ export default function Signup({ userIdCookie }) {
                                 <p className="text-sm text-gray-700 mt-6">
                                     *Already have an account?{" "}
                                     <a
-                                        href="http://localhost:3000/users/signin"
+                                        href="https://cryptoyard-sakshgupta.vercel.app/users/signin"
                                         className="text-[color:var(--darker-secondary-color)]"
                                     >
                                         Signin.

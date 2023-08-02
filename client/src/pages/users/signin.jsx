@@ -63,9 +63,9 @@ export default function Signin({ userIdCookie }) {
         if (response.status === 200) {
             setMessage({ errorMsg: "", successMsg: data.msg });
             console.log(data);
-            setStep(3); // Move to next step on the same page
-
             setUserToken(data.user.user_id); // set cookie when signed up
+
+            router.push("/");
         } else {
             console.error(`Failed with status code ${response.status}`);
             setMessage({ errorMsg: data.msg, successMsg: "" });
@@ -94,7 +94,7 @@ export default function Signin({ userIdCookie }) {
                         }`}
                     >
                         <div
-                            className={`h-full border-2 rounded-l-lg px-5 py-2 ${
+                            className={`h-full border-2 rounded-l-lg rounded-r-lg px-5 py-2 ${
                                 step >= 2
                                     ? `text-white bg-[color:var(--darker-secondary-color)] border-r-white border-[color:var(--darker-secondary-color)]`
                                     : `border-[color:var(--darker-secondary-color)] border-dashed`
@@ -102,24 +102,6 @@ export default function Signin({ userIdCookie }) {
                         >
                             <div>01</div>
                             Signin
-                        </div>
-                    </div>
-
-                    {/* Step 3: normal-height:fit; mobile-view: 6rem */}
-                    <div
-                        className={`w-full h-24 lg:h-fit ${
-                            step === 3 ? `font-medium` : ``
-                        }`}
-                    >
-                        <div
-                            className={`h-full border-2 border-l-0 rounded-r-lg px-5 py-2 ${
-                                step >= 3
-                                    ? `text-white bg-[color:var(--darker-secondary-color)] border-[color:var(--darker-secondary-color)]`
-                                    : `border-[color:var(--darker-secondary-color)] border-dashed`
-                            }`}
-                        >
-                            <div>02</div>
-                            Go to Dashboard!
                         </div>
                     </div>
                 </div>
@@ -208,18 +190,32 @@ export default function Signin({ userIdCookie }) {
                                 <p className="text-sm text-gray-700 mt-6">
                                     *Don&apos;t have an account?{" "}
                                     <a
-                                        href="http://localhost:3000/users/signup"
+                                        href="https://cryptoyard-sakshgupta.vercel.app/users/signup"
                                         className="text-[color:var(--darker-secondary-color)]"
                                     >
                                         Signup.
                                     </a>
                                 </p>
-                                <button
-                                    type="submit"
-                                    className="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
-                                >
-                                    Submit
-                                </button>
+                                <div className="space-x-5">
+                                    <button
+                                        type="submit"
+                                        className="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+                                    >
+                                        Submit
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        onClick={() => {
+                                            setEmail(
+                                                "sakshamgupta.dev@gmail.com"
+                                            );
+                                            setPassword("saksham123");
+                                        }}
+                                        className="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+                                    >
+                                        Testing
+                                    </button>
+                                </div>
                             </form>
                         )
                     }
